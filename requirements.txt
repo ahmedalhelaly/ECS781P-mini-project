@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+requests
+requests-cache
+SQLAlchemy
+passlib
+flask_httpauth
+python-dotenv
