@@ -21,7 +21,7 @@ covid_url_template = os.getenv('API_URL_TEMPLATE')
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS') 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_STRING') 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') 
 app.debug = os.getenv('DEBUG') 
 
 db = SQLAlchemy(app)
