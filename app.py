@@ -82,14 +82,15 @@ def home():
 def get_users():
     all_users = User.query.all()
     result = []
-    for user in all_users:
-        current_user = {}
-        current_user['user_name'] = user.user_name
-        current_user['country'] = user.country
-        current_user['email'] = user.email
-        current_user['last_update'] = user.last_update
-        current_user['access_id'] = user.access_id
-        result.append(current_user)
+    if len(all_users) > 0:
+        for user in all_users:
+            current_user = {}
+            current_user['user_name'] = user.user_name
+            current_user['country'] = user.country
+            current_user['email'] = user.email
+            current_user['last_update'] = user.last_update
+            current_user['access_id'] = user.access_id
+            result.append(current_user)
     return jsonify(result)
 
 @app.route('/users/add', methods=['POST'])
