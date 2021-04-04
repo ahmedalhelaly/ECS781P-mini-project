@@ -12,16 +12,16 @@ App is deployed on Heroku and using Heroku Postgres database: https://covid-stat
 ### 1- GET
 To retrieve all registered users in JSON format.
 ```
-/users
+https://covid-stats-ecs781p.herokuapp.com/users
 ```
 To return latest covid-19 statistics by country from covid19api
 ```
-/stats/latest/<country>
+https://covid-stats-ecs781p.herokuapp.com/stats/latest/<country>
 ```
 ### 2- POST
 To register a new user, data sent in the body in JSON format.
 ```
-/users/add
+https://covid-stats-ecs781p.herokuapp.com/users/add
 ```
 ```
 {
@@ -35,7 +35,7 @@ To register a new user, data sent in the body in JSON format.
 ### 3- PUT
 To update an existing user, data sent in the body in JSON format.
 ```
-/users/update
+https://covid-stats-ecs781p.herokuapp.com/users/update
 ```
 ```
 {
@@ -49,5 +49,5 @@ To update an existing user, data sent in the body in JSON format.
 ### 4- DELETE
 To delete a user using their username.
 ```
-/users/delete/<user_name>
+https://covid-stats-ecs781p.herokuapp.com/users/delete/<user_name>
 ```
