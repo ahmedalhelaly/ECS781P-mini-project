@@ -1,6 +1,6 @@
 # Overview:
 It is a simple app created as a Mini-Project for Cloud Computing module @QMUL-EECS Big Data Science MSc. programme.
-The app enables you to register with your username, email and country. Once you successfully log in, you will be redirected to a simple HTML page with latest statistics in your country.
+The app enables you to register with your username, email, password and country. Once you successfully log in, you will be redirected to a simple HTML page with latest statistics in your country.
 
 # How it works?
 This is a Flask app so the code is written in Python. The database used is PostgresQL and SQLAlchemy is used as an ORM library. User authentication and authorization is implemented using access_types: 1 | admin & 2 | user. Only an admin user can update and delete users. Passwords are hashed before saving in database and not as plain text.
