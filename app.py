@@ -11,6 +11,7 @@ import requests_cache
 import requests
 import json
 import sqlite3
+import click
 
 load_dotenv()
 
@@ -20,14 +21,24 @@ covid_url_template = os.getenv('API_URL_TEMPLATE')
 
 app = Flask(__name__)
 
+# Postgreslq database configuration
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS') 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI') 
 app.debug = os.getenv('DEBUG') 
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 auth = HTTPBasicAuth()
+
+@app.cli.command("create_database")
+# flask CLI command for heroku to Create Database
+def create_database():
+    db.create_all()
+
+@app.cli.command("drop_database")
+# flask CLI command for heroku to Drop Database
+def drop_database():
+    db.drop_all()
 
 class User(db.Model):
 # User class database model
