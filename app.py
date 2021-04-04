@@ -16,10 +16,9 @@ import click
 load_dotenv()
 
 requests_cache.install_cache('covid-api-cache', backend='sqlite', expire_after=36000)
-
 covid_url_template = os.getenv('API_URL_TEMPLATE')
-
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 
 # Postgreslq database configuration
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS') 
@@ -27,8 +26,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.debug = os.getenv('DEBUG') 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
-auth = HTTPBasicAuth()
 
 @app.cli.command("create_database")
 # flask CLI command for heroku to Create Database
@@ -129,6 +126,7 @@ def add_user():
 
 @app.route('/users/update', methods=['PUT'])
 # PUT request to update an existing user in the database
+@auth.login_required
 def update_user():
     if g.user.access_id == 1:
         user_data = request.get_json()
@@ -146,6 +144,7 @@ def update_user():
 
 @app.route('/users/delete/<user_name>', methods=['DELETE'])
 # DELETE request to delete an existing user from the database
+@auth.login_required
 def delete_user(user_name):
     if g.user.access_id == 1:
         user = User.query.filter_by(user_name = user_name).first()
