@@ -15,6 +15,7 @@ import click
 
 load_dotenv()
 
+# Using caching for external API requests for faster retreival of data
 requests_cache.install_cache('covid-api-cache', backend='sqlite', expire_after=36000)
 covid_url_template = os.getenv('API_URL_TEMPLATE')
 app = Flask(__name__)
@@ -28,7 +29,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 @app.cli.command("create_database")
-# flask CLI command for heroku to Create Database
+# Flask CLI custom command for heroku to Create Database and insert basic user access types (admin, user)
 def create_database():
     db.create_all()
     admin = AccessType(id=1, title='admin')
@@ -38,7 +39,7 @@ def create_database():
     db.session.commit()
 
 @app.cli.command("drop_database")
-# flask CLI command for heroku to Drop Database
+# Flask CLI custom command for heroku to Drop Database
 def drop_database():
     db.drop_all()
 
@@ -60,9 +61,11 @@ class User(db.Model):
         self.access_id = access_id
 
     def hash_password(self, password):
+        # Hashing password using passlib.apps library
         self.password = pwd_context.encrypt(password)
 
     def verify_password(self, password):
+        # Comparing hashed password for verification using passlib.apps library
         return pwd_context.verify(password, self.password)
 
 class AccessType(db.Model):
@@ -110,7 +113,7 @@ def get_users():
 @app.route('/users/add', methods=['POST'])
 # POST request to add a new user to the database
 def add_user():
-    user_data = request.get_json()
+    user_data = request.get_json() # Extracting JSON object from request body
     if len(user_data['user_name']) == 0 or len(user_data['email']) == 0 or len(user_data['country']) == 0 or len(user_data['password']) == 0:
         abort(Response('400: missing arguments'))
     if User.query.filter_by(user_name = user_data['user_name']).first() is not None:
@@ -129,7 +132,7 @@ def add_user():
 @auth.login_required
 def update_user():
     if g.user.access_id == 1:
-        user_data = request.get_json()
+        user_data = request.get_json() # Extracting JSON object from request body
         if len(user_data['user_name']) == 0 or len(user_data['email']) == 0 or len(user_data['country']) == 0:
             abort(Response('400: missing arguments'))
         user = User.query.filter_by(user_name = user_data['user_name']).first()
