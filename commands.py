@@ -1,9 +1,10 @@
 import click
-from flask.cli import with_appcontext
-from .extensions import db
-from .models import User, Question
+from app import db
 
-@click.command(name='create_tables')
-@with_appcontext
-def create_tables():
+def create_db():
+    """Creates database"""
     db.create_all()
+    
+def drop_db():
+    """Cleans database"""
+    db.drop_all()
