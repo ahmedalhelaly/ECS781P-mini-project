@@ -15,7 +15,7 @@ import click
 
 load_dotenv()
 
-# Using caching for external API requests for faster retreival of data
+# Using caching for external API requests for faster retrieval of data
 requests_cache.install_cache('covid-api-cache', backend='sqlite', expire_after=36000)
 covid_url_template = os.getenv('API_URL_TEMPLATE')
 app = Flask(__name__)
