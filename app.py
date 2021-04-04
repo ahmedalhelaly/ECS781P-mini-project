@@ -34,6 +34,11 @@ auth = HTTPBasicAuth()
 # flask CLI command for heroku to Create Database
 def create_database():
     db.create_all()
+    admin = AccessType(id=1, title='admin')
+    db.session.add(admin)
+    user = AccessType(id=2, title='user')
+    db.session.add(user)
+    db.session.commit()
 
 @app.cli.command("drop_database")
 # flask CLI command for heroku to Drop Database
@@ -69,7 +74,8 @@ class AccessType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True, nullable=False)
 
-    def __init__(self, title):
+    def __init__(self, id, title):
+        self.id = id
         self.title = title
 
 class Stats:
